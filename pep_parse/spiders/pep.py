@@ -1,18 +1,19 @@
 import scrapy
 
+from pep_parse.settings import PEPSPIDER_CONFIGS
 from pep_parse.items import PepParseItem
 
 
 class PepSpider(scrapy.Spider):
-    name = 'pep'
-    allowed_domains = ['peps.python.org']
-    start_urls = ['https://peps.python.org/']
+    name = PEPSPIDER_CONFIGS['name']
+    allowed_domains = PEPSPIDER_CONFIGS['allowed_domains']
+    start_urls = PEPSPIDER_CONFIGS['start_urls']
 
     def parse(self, response):
         numerical_index_table = response.css('section[id="numerical-index"]')
         pep_links = (numerical_index_table.css('td a::attr(href)').getall())
         for link in pep_links:
-            yield response.follow(link, callback=self.parse_pep)
+            yield response.follow(f'{link}/', callback=self.parse_pep)
 
     def parse_pep(self, response):
         data = {

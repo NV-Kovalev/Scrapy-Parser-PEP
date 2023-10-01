@@ -23,3 +23,9 @@ ITEM_PIPELINES = {
 }
 
 ROBOTSTXT_OBEY = True
+
+PEPSPIDER_CONFIGS = {
+    'name': 'pep',
+    'allowed_domains': ['peps.python.org'],
+    'start_urls': ['https://peps.python.org/']
+}
